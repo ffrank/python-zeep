@@ -93,3 +93,22 @@ to `UsernameToken()`.
     >>> client = Client(
     ...     'http://www.webservicex.net/ConvertSpeed.asmx?WSDL', wsse=user_name_token
     ...)
+
+Verifying signed server responses
+---------------------------------
+
+A client object that has a Signature object specified will expect signed
+replies from the server. An error is raised if the signature is missing.
+
+If the server signs its replies with a key that differs from the client's
+key, the SMIME certificate has to be passed to Signature through the
+server_certfile paramter:
+
+
+    >>> from zeep import Client
+    >>> from zeep.wsse.signature import Signature
+    >>> client = Client(
+    ...     'http://www.webservicex.net/ConvertSpeed.asmx?WSDL',
+    ...     wsse=Signature(
+    ...         private_key_filename, public_key_filename,
+    ...         optional_password, server_certfile=server_cert_filename))
